@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>Label</key>
+	<dict>
+		<key>Label</key>
 		<string>com.rmward.dynamicdnsupdater</string>
-	<key>StartInterval</key>
+		<key>StartInterval</key>
 		<integer>1800</integer>
-	<key>StandardOutPath</key>
+		<key>StandardOutPath</key>
 		<string>/var/log/dynamicdnsupdater.log</string>
-	<key>StandardErrorPath</key>
+		<key>StandardErrorPath</key>
 		<string>/var/log/dynamicdnsupdater.log</string>
-	<key>ProgramArguments</key>
+		<key>ProgramArguments</key>
 		<array>
 			<string>bash</string>
 			<string>-c</string>
-			<string>/usr/local/bin/wget -qO- "https://www.dnsmadeeasy.com/servlet/updateip?username=USERNAME&amp;password:PASSWORD&amp;id=ID&amp;ip=`dig +short myip.opendns.com @resolver1.opendns.com`"</string>
+			<string>/usr/local/bin/wget -qO- "https://www.dnsmadeeasy.com/servlet/updateip?username=USERNAME&amp;password=PASSWORD&amp;id=RECORDID&amp;ip=`dig +short myip.opendns.com @resolver1.opendns.com`"</string>
 		</array>
-       <key>RunAtLoad</key>
-	       <true/>
-</dict>
+		<key>RunAtLoad</key>
+		<true/>
+	</dict>
 </plist>
