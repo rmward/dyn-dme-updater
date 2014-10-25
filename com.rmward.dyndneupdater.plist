@@ -7,9 +7,9 @@
 		<key>StartInterval</key>
 		<integer>1800</integer>
 		<key>StandardOutPath</key>
-		<string>/var/log/dynamicdnsupdater.log</string>
+		<string>LOG</string>
 		<key>StandardErrorPath</key>
-		<string>/var/log/dynamicdnsupdater.log</string>
+		<string>LOG</string>
 		<key>ProgramArguments</key>
 		<array>
 			<string>bash</string>

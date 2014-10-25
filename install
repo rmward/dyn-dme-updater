@@ -14,12 +14,19 @@ if [ -z "$username" -o -z "$password" -o -z "$recordid" ]; then
   exit
 fi
 
+log=/var/log/dyn-dme-updater.log
+
+echo "Please provide your password if asked..."
+sudo touch $log
+sudo chown $USER $log
+
 target_dir=$HOME/Library/LaunchAgents
 file=com.rmward.dyndneupdater.plist
 
 mkdir -p $target_dir
 
 cat $file | \
+  sed "s#LOG#$log#g" | \
   sed "s/USERNAME/$username/g" | \
   sed "s/PASSWORD/$password/g" | \
   sed "s/RECORDID/$recordid/g" > $target_dir/$file
