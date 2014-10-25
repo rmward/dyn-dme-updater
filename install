@@ -1,0 +1,52 @@
+#!/bin/bash
+
+username=$1
+password=$2
+recordid=$3
+
+if [ -z "$username" -o -z "$password" -o -z "$recordid" ]; then
+  echo "usage: $0 username password record-id"
+  echo "where:"
+  echo "   username  is what you use to login to DnsMadeEasy"
+  echo "   password  is either your account password (insecure!) or"
+  echo "             a special assigned password for this dynamic host"
+  echo "   record-id is the ID of the record in DNSMadeEasy control panel."
+  exit
+fi
+
+log=/var/log/dyn-dme-updater.log
+
+echo "Please provide your password if asked..."
+sudo touch $log
+sudo chown $USER $log
+
+target_dir=$HOME/Library/LaunchAgents
+file=com.rmward.dyndneupdater.plist
+
+mkdir -p $target_dir
+
+cat $file | \
+  sed "s#LOG#$log#g" | \
+  sed "s/USERNAME/$username/g" | \
+  sed "s/PASSWORD/$password/g" | \
+  sed "s/RECORDID/$recordid/g" > $target_dir/$file
+cmd=`awk -F '</?string>' '{print $2}' $target_dir/$file |grep wget| sed 's/\&amp;/\&/g'`
+eval $($cmd)
+result=$?
+if [ $result == 0 ]; then
+  echo "Success: DnsMadeEasy API returned OK – record updated."
+  launchctl unload -w $target_dir/$file 2>/dev/null 1>/dev/null
+  launchctl   load -w $target_dir/$file 2>&1 > /dev/null
+  result=$?
+  if [ $result == 0 ]; then
+    echo 'Additionally, service was added and will update upon login' 
+    echo "See file $target_dir/$file for more details."
+  else
+    echo "launchctl exited with code $result, something is not right..."
+  fi
+else
+  echo "API call to DnsMadeEasy failed, exit status $result."
+  echo "The command we ran is the following:"
+  echo "$cmd"
+fi
+ 
