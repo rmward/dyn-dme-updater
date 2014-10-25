@@ -1,4 +1,4 @@
-Dynamic hostname auto-updater for DnsMadeEasy on Mac OS-X
+Dynamic DNS on OS-X with DNSMadeEasy
 =======================================
 
 A Mac OS X launch agent to regularly update a dynamic DNS entry for DNSMadeEasy with a machine's current public IP address.
